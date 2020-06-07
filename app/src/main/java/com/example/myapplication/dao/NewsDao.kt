@@ -15,4 +15,7 @@ public interface NewsDao {
 
     @Query("SELECT * FROM news_table")
     fun getAllNews(listOfNews : LiveData<List<News>>)
+
+    @Delete
+    fun deleteNews(currentItem: News)
 }

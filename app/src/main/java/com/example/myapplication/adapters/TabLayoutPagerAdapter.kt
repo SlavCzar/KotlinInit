@@ -22,9 +22,9 @@ class TabLayoutPagerAdapter(fm : FragmentManager) : FragmentPagerAdapter(fm) {
 
     override fun getPageTitle(position: Int): CharSequence? {
         return when(position){
-            0 -> "First"
-            1->"Second"
-            else->"Third"
+            0 -> "Top Headlines"
+            1->"Categorical"
+            else->"Coming Soon"
         }
 
     }

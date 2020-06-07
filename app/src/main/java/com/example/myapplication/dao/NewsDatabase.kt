@@ -5,12 +5,14 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.myapplication.models.News
+import com.example.myapplication.models.SourceX
 
-@Database(entities = [News::class],version = 1,exportSchema = true)
+@Database(entities = [News::class, SourceX::class],version = 1,exportSchema = true)
 public abstract class NewsDatabase: RoomDatabase() {
 
     private var newContext: Context? = null
     abstract fun newsDao(): NewsDao?
+    abstract fun sourcesDao():SourcesDao?
     private val TAG = "NewsDatabase"
 
 

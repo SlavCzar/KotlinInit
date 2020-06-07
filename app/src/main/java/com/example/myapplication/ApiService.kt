@@ -1,11 +1,9 @@
 package com.example.myapplication
 
-import com.example.myapplication.models.News
+import com.example.myapplication.models.SourcesResponse
 import com.example.myapplication.models.TopHeadlines
 import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Headers
 import retrofit2.http.Query
 
 
@@ -15,6 +13,19 @@ interface ApiService {
 
 //    @Headers("x-api-key:8a842c0abbae4a2caae55feb66c9dd77")
     @GET("top-headlines")
-    fun getTopHeadlines(@Query("q")searchQuery:String?=null, @Query("country")country : String?=null,
+    fun getTopHeadlines(
+    @Query("q") searchQuery: String? = null,
+    @Query("country") country: String? = null,
+    @Query("sources") source: String? = null,
+    @Query("apiKey") apiKey: String,
+    @Query("category")category: String?=null
+) : Call<TopHeadlines>
+
+    @GET("everything")
+    fun getEverything(@Query("q")searchQuery:String?=null, @Query("country")country : String?=null,
                         @Query("sources")source: String?=null, @Query("apiKey")apiKey: String) : Call<TopHeadlines>
+
+    @GET("sources")
+    fun getAllSourcesFromAPI(@Query("apiKey")apiKey: String) : Call<SourcesResponse>
+
 }
