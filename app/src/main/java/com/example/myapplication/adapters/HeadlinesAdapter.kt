@@ -3,15 +3,18 @@ package com.example.myapplication.adapters
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.activities.NewsDetailActivity
+import com.example.myapplication.activities.NewsWebActivity
 import com.example.myapplication.databinding.ItemRecyclerEverythingBinding
 import com.example.myapplication.databinding.ItemRecyclerHeadlinesBinding
 import com.example.myapplication.models.News
@@ -58,12 +61,11 @@ class HeadlinesAdapter(private val context: Context,val viewModel: NewsArticleVi
             .into(holder.imageView)
 
         holder.itemView.setOnClickListener {
-            val intent = Intent(it.context, NewsDetailActivity::class.java)
-            intent.putExtra("headline",currentItem.title)
-            intent.putExtra("content",currentItem.newsContent)
-            intent.putExtra("imageUrl",currentItem.imageUrl)
-
-            it.context.startActivity(intent)
+            val intent = Intent(it.context, NewsWebActivity::class.java)
+            intent.putExtra("url",currentItem.articleUrl)
+            val builder = CustomTabsIntent.Builder()
+            val tabIntent = builder.build()
+            tabIntent.launchUrl(it.context, Uri.parse(currentItem.articleUrl))
         }
     }
 }
