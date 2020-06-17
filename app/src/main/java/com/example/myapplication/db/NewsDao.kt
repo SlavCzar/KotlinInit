@@ -1,4 +1,4 @@
-package com.example.myapplication.dao
+package com.example.myapplication.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
@@ -14,7 +14,7 @@ public interface NewsDao {
     fun updateNews(news : News)
 
     @Query("SELECT * FROM news_table")
-    fun getAllNews(listOfNews : LiveData<List<News>>)
+    fun getAllNews() : LiveData<List<News>>
 
     @Delete
     fun deleteNews(currentItem: News)

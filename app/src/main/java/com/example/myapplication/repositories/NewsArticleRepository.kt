@@ -6,8 +6,7 @@ import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.example.myapplication.ApiService
 import com.example.myapplication.BASE_URL
-import com.example.myapplication.dao.NewsDao
-import com.example.myapplication.dao.NewsDatabase
+import com.example.myapplication.db.NewsDatabase
 import com.example.myapplication.models.News
 import com.example.myapplication.models.TopHeadlines
 import retrofit2.Call
@@ -28,14 +27,12 @@ class NewsRepository(val application: Application) {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     val apiService = retrofit.create(ApiService::class.java)
+    val database = NewsDatabase.getInstance(application)
 
-    fun getAllNews(
-        searchQuery: String? = null,
-        country: String? = null,
-        sortBy: String? = null,
-        source: String? = null,
-        category: String?=null
-    ){
+
+    fun getAllNews(searchQuery: String? = null,country: String? = null,
+        sortBy: String? = null,source: String? = null,category: String?=null)
+    {
         apiService.getTopHeadlines(apiKey = "8a842c0abbae4a2caae55feb66c9dd77",searchQuery = searchQuery
         ,country = country,source = source,category = category).enqueue(object : Callback<TopHeadlines>{
 
@@ -43,6 +40,8 @@ class NewsRepository(val application: Application) {
                 Log.d("Repository","getting top headlines")
                 Log.d(TAG, "onResponse: "+ response.body().toString())
                 newsList.value = response.body()?.articles
+                newsList.value?.let { insertNews(it) }
+
             }
 
             override fun onFailure(call: Call<TopHeadlines>, t: Throwable) {
@@ -50,11 +49,15 @@ class NewsRepository(val application: Application) {
                 Toast.makeText(application,t.toString(),Toast.LENGTH_LONG).show();
                 Log.e("ApiCallError",t.toString())
             }
-
-
         })
-
     }
 
-
+    fun insertNews(newsList:List<News>)
+    {
+        mIoExecutor.execute {
+            for (news in newsList) {
+                database.newsDao()?.insertNews(news)
+            }
+        }
+    }
 }                                                                                                                                                                                                                                           
