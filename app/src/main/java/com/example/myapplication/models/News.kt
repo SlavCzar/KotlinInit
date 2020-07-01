@@ -32,5 +32,9 @@ data class News (
     val source : Source,
 
     @ColumnInfo(defaultValue = "Null author")
-    val author : String
+    val author : String,
+
+    @ColumnInfo
+    @Expose(serialize = false,deserialize = false)
+    var isSaved:Int = 0
 )

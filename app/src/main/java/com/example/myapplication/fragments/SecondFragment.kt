@@ -24,8 +24,7 @@ class SecondFragment : Fragment() {
     private lateinit var articleViewModel: NewsArticleViewModel
     private lateinit var adapter: HeadlinesAdapter
 
-    override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
         d("Swiped","Second Fragment")
         _binding = FragmentSecondBinding.inflate(inflater, container, false)
@@ -37,45 +36,42 @@ class SecondFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         recycler_everything.layoutManager = LinearLayoutManager(activity)
         articleViewModel = ViewModelProvider(this).get(NewsArticleViewModel::class.java)
-        adapter = activity?.let { HeadlinesAdapter(it,articleViewModel) }!!
+        adapter = activity?.let { HeadlinesAdapter(articleViewModel) }!!
         if(!isAdded)
             return
+//
+//        articleViewModel.getAllHeadlines(
+//            source = "the-times-of-india,the-hindu,bbc-news",
+//            category = null
+//        )
 
-        articleViewModel.getAllHeadlines(
-            source = "the-times-of-india,the-hindu,bbc-news",
-            category = null
-        )
-        articleViewModel.newsList.observe(viewLifecycleOwner, Observer {
-//            d(TAG, "Inside observer ")
+        articleViewModel.categoricalHeadlinesList.observe(viewLifecycleOwner, Observer {
             if(it!=null && isAdded)
             {
-//                for(x in 0..10){
-//                    d(TAG, "Search result: ${it[x].title} ")
-//                }
-                d(TAG, "Change has been observed")
-                adapter.setNewsList(it)
-                adapter.notifyDataSetChanged()
+                d(TAG, "Setting adapter with categorical data")
+                adapter.submitList(it)
             }
         });
+        recycler_everything.adapter = adapter
         chipGroup.setOnCheckedChangeListener(object : ChipGroup.OnCheckedChangeListener{
             override fun onCheckedChanged(group: ChipGroup?, checkedId: Int) {
                 when(checkedId){
-                    R.id.chip_all -> articleViewModel.getAllHeadlines(category="general",country = "in")
-                    R.id.chip_business -> articleViewModel.getAllHeadlines(category="business",country = "in")
-                    R.id.chip_tech -> articleViewModel.getAllHeadlines(category="tech",country = "in")
-                    R.id.chip_sports -> articleViewModel.getAllHeadlines(category="sports",country = "in")
-                    R.id.chip_entertainment -> articleViewModel.getAllHeadlines(category="entertainment",country = "in")
-                    R.id.chip_science -> articleViewModel.getAllHeadlines(category="science",country = "in")
+                    R.id.chip_all -> articleViewModel.categoryLiveData.postValue("general")
+                    R.id.chip_business -> articleViewModel.categoryLiveData.postValue("business")
+                    R.id.chip_tech -> articleViewModel.categoryLiveData.postValue("tech")
+                    R.id.chip_sports -> articleViewModel.categoryLiveData.postValue("sports")
+                    R.id.chip_entertainment -> articleViewModel.categoryLiveData.postValue( "entertainment")
+                    R.id.chip_science -> articleViewModel.categoryLiveData.postValue( "science")
                     else -> {
                         chip_all.isChecked = true
-                        articleViewModel.getAllHeadlines(category="general")
+                        articleViewModel.categoryLiveData.postValue( "general")
                     }
                 }
             }
 
         })
 
-        recycler_everything.adapter = adapter
+
 
     }
 }

@@ -38,26 +38,27 @@ class FirstFragment : Fragment() {
 
         recycler_headlines.layoutManager = LinearLayoutManager(activity)
         articleViewModel = ViewModelProvider(this).get(NewsArticleViewModel::class.java)
-        adapter = activity?.let { HeadlinesAdapter(it,articleViewModel) }!!
+        adapter = activity?.let { HeadlinesAdapter(articleViewModel) }!!
         if(!isAdded)
             return
 
-        articleViewModel.getAllHeadlines(
-            source = "the-times-of-india,the-hindu,bbc-news",
-            category = null
-        )
-        articleViewModel.newsList.observe(viewLifecycleOwner, Observer {
-//            d(TAG, "Inside observer ")
-            if(it!=null && isAdded)
-            {
-//                for(x in 0..10){
-//                    d(TAG, "Search result: ${it[x].title} ")
-//                }
-                d(TAG, "Change has been observed")
-                adapter.setNewsList(it)
-                adapter.notifyDataSetChanged()
-            }
-        });
+//        articleViewModel.getAllHeadlines(
+//            source = "the-times-of-india,the-hindu,bbc-news",
+//            category = null
+//        )
+//        articleViewModel.newsList.observe(viewLifecycleOwner, Observer {
+//
+//            if(it!=null && isAdded)
+//            {
+//                d(TAG, "Change has been observed")
+//                adapter.setNewsList(it)
+//                adapter.notifyDataSetChanged()
+//            }
+//        });
+        articleViewModel.searchQueryLiveData.value = ""
+        articleViewModel.headlinesPagedList.observe(viewLifecycleOwner, Observer {
+            adapter.submitList(it)
+        })
         recycler_headlines.adapter = adapter
 
     }
@@ -73,24 +74,38 @@ class FirstFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 Log.d("Search", " : $query")
                 if(query!=null && query!="")
-                    articleViewModel.getAllHeadlines(searchQuery = query, category = null)
+                {
+//                    articleViewModel.getAllHeadlines(searchQuery = query, category = null)
+                    articleViewModel.searchQueryLiveData.value = query
+                    articleViewModel.searchQueryLiveData.postValue(query)
+                }
                 else
-                    articleViewModel.getAllHeadlines(category = null)
+                {
+//                    articleViewModel.getAllHeadlines(category = null)
+                    articleViewModel.searchQueryLiveData.value = ""
+                    articleViewModel.searchQueryLiveData.postValue("")
+                }
+
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if(newText==null || newText=="")
-                articleViewModel.getAllHeadlines(category = null)
+                {
+//                    articleViewModel.getAllHeadlines(category = null)
+                    articleViewModel.searchQueryLiveData.value = ""
+                }
+
                 return false
             }
         })
         searchView.setOnCloseListener (object : androidx.appcompat.widget.SearchView.OnCloseListener{
             override fun onClose(): Boolean {
-                articleViewModel.getAllHeadlines(
-                    source = "the-times-of-india,bbc-news,the-hindu,the-telegraph",
-                    category = null
-                )
+//                articleViewModel.getAllHeadlines(
+//                    source = "the-times-of-india,bbc-news,the-hindu,the-telegraph",
+//                    category = null
+//                )
+                articleViewModel.searchQueryLiveData.value = ""
                 return true
             }
 

@@ -18,11 +18,13 @@ interface ApiService {
     @Query("country") country: String? = null,
     @Query("sources") source: String? = null,
     @Query("apiKey") apiKey: String,
-    @Query("category")category: String?=null
+    @Query("category")category: String?=null,
+    @Query("page")page:Int = 1,
+    @Query("pageSize")pageSize:Int = 30
 ) : Call<TopHeadlines>
 
     @GET("everything")
-    fun getEverything(@Query("q")searchQuery:String?=null, @Query("country")country : String?=null,
+    fun getEverything(@Query("q")searchQuery:String?=null, @Query("language")language : String?=null,
                         @Query("sources")source: String?=null, @Query("apiKey")apiKey: String) : Call<TopHeadlines>
 
     @GET("sources")
