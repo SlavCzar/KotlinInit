@@ -70,9 +70,21 @@ public class NewsArticleViewModel(application : Application) : AndroidViewModel(
     public fun getAllHeadlines(
         searchQuery: String? = null, country: String? = null,
         source: String? = null,
-        category: String?=null
-    ) {
+        category: String?=null)
+    {
         return newsRepository.getAllNews(searchQuery = searchQuery,country = country,source = source,category = category);
+    }
+
+    public fun insertNewsInDb(news: News)
+    {
+        d("viewmodel", "insertNewsInDb: ")
+        newsRepository.insertNews(news)
+    }
+
+    public fun deleteNewsFromDb(news: News)
+    {
+        d("viewmodel", "insertNewsInDb: ")
+        newsRepository.deleteNews(news)
     }
 
 

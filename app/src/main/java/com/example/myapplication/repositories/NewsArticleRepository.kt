@@ -40,7 +40,7 @@ class NewsRepository(val application: Application) {
                 Log.d("Repository","getting top headlines")
                 Log.d(TAG, "onResponse: "+ response.body().toString())
                 newsList.value = response.body()?.articles
-                newsList.value?.let { insertNews(it) }
+//                newsList.value?.let { insertNews(it) }
 
             }
 
@@ -52,12 +52,18 @@ class NewsRepository(val application: Application) {
         })
     }
 
-    fun insertNews(newsList:List<News>)
+    fun insertNews(news: News)
     {
         mIoExecutor.execute {
-            for (news in newsList) {
+            Log.d(TAG, "insertNews: ")
                 database.newsDao()?.insertNews(news)
             }
+    }
+
+    fun deleteNews(news: News) {
+        mIoExecutor.execute {
+            Log.d(TAG, "deleteNews: ")
+            database.newsDao()?.deleteNews(news)
         }
     }
 }                                                                                                                                                                                                                                           

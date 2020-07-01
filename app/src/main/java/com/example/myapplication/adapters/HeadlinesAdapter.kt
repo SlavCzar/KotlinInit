@@ -27,11 +27,6 @@ class HeadlinesAdapter(private val viewModel: NewsArticleViewModel): PagedListAd
     val drawableSaved: Int = R.drawable.ic_save_marked_foreground
     private lateinit var articleViewModel: NewsArticleViewModel
 
-    fun setNewsList(newsList: List<News>) {
-        Log.d("Adapter", "news list changed")
-        this.newsList = newsList
-        notifyDataSetChanged()
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeadlineViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(
@@ -45,22 +40,25 @@ class HeadlinesAdapter(private val viewModel: NewsArticleViewModel): PagedListAd
     override fun onBindViewHolder(holder: HeadlineViewHolder, position: Int) {
         val currentItem = getItem(position)
         currentItem?.let {holder.bindTo(it)}
-//        holder.saveBtn.setOnClickListener {
-//            Log.d("Bruh", "clicked save button")
-//            if (holder.saveBtn.drawable.equals(drawableUnsaved)) {
-//                currentItem.isSaved = 1
-//                holder.saveBtn.setImageResource(drawableSaved)
-//            } else {
-//                currentItem.isSaved = 0
-//                holder.saveBtn.setImageResource(drawableUnsaved)
-//            }
-//
-//        }
+        holder.saveBtn.setOnClickListener {
+            Log.d("Bruh", "clicked save button")
+            if (holder.saveBtn.tag.equals("unsaved")) {
+                Log.d("adapter", "Now inserting in db")
+                currentItem?.let { it1 -> articleViewModel.insertNewsInDb(it1) }
+                holder.saveBtn.setImageResource(drawableSaved)
+                holder.saveBtn.tag = "saved"
+            } else {
+                Log.d("adapter", "Now deleting from db")
+                currentItem?.let { it1 -> articleViewModel.deleteNewsFromDb(it1) }
+                holder.saveBtn.setImageResource(drawableUnsaved)
+                holder.saveBtn.tag = "unsaved"
+            }
+
+        }
     }
 
     class HeadlineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val recyclerBinding: ItemRecyclerEverythingBinding =
-            ItemRecyclerEverythingBinding.bind(itemView)
+        private val recyclerBinding: ItemRecyclerEverythingBinding = ItemRecyclerEverythingBinding.bind(itemView)
         private val imageView = recyclerBinding.imgEverythingArticleImage
         private val txtHeadline = recyclerBinding.everythingTxtHeadline
         val saveBtn = recyclerBinding.saveBtn
@@ -83,7 +81,9 @@ class HeadlinesAdapter(private val viewModel: NewsArticleViewModel): PagedListAd
                 tabIntent.launchUrl(it.context, Uri.parse(news.url))
 
             }
-        }
 
-    }
+            saveBtn.tag = "unsaved"
+
+        }
+        }
 }
