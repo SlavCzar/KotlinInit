@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.adapters.HeadlinesAdapter
 import com.example.myapplication.databinding.FragmentFirstBinding
+import com.example.myapplication.network.NetworkStateResource
 import com.example.myapplication.viewmodels.NewsArticleViewModel
 import kotlinx.android.synthetic.main.fragment_first.*
 
@@ -42,19 +43,15 @@ class FirstFragment : Fragment() {
         if(!isAdded)
             return
 
-//        articleViewModel.getAllHeadlines(
-//            source = "the-times-of-india,the-hindu,bbc-news",
-//            category = null
-//        )
-//        articleViewModel.newsList.observe(viewLifecycleOwner, Observer {
-//
-//            if(it!=null && isAdded)
-//            {
-//                d(TAG, "Change has been observed")
-//                adapter.setNewsList(it)
-//                adapter.notifyDataSetChanged()
-//            }
-//        });
+
+        articleViewModel.networkStateIndicator.observe(viewLifecycleOwner, Observer {networkState->
+             when(networkState){
+                 is NetworkStateResource.Error -> Log.e(TAG, "ERROR: ${networkState.message}")
+                 is NetworkStateResource.Success -> d(TAG, "SUCCESS ")
+                 is NetworkStateResource.Loading -> d(TAG, "LOADING: ")
+             }
+
+        })
         articleViewModel.searchQueryLiveData.value = ""
         articleViewModel.headlinesPagedList.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)

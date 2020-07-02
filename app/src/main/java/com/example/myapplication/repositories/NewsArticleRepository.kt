@@ -4,8 +4,8 @@ import android.app.Application
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import com.example.myapplication.ApiService
-import com.example.myapplication.BASE_URL
+import com.example.myapplication.network.ApiService
+import com.example.myapplication.network.BASE_URL
 import com.example.myapplication.db.NewsDatabase
 import com.example.myapplication.models.News
 import com.example.myapplication.models.TopHeadlines

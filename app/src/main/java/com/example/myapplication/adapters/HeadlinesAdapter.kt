@@ -42,6 +42,7 @@ class HeadlinesAdapter(private val viewModel: NewsArticleViewModel): PagedListAd
         currentItem?.let {holder.bindTo(it)}
         holder.saveBtn.setOnClickListener {
             Log.d("Bruh", "clicked save button")
+            //tried checking for the imageDrawable to get saved/unsaved status but assigning tag to imageView does the trick in getting/setting the state
             if (holder.saveBtn.tag.equals("unsaved")) {
                 Log.d("adapter", "Now inserting in db")
                 currentItem?.let { it1 -> articleViewModel.insertNewsInDb(it1) }

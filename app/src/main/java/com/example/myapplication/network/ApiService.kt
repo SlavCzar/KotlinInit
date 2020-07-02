@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.network
 
 import com.example.myapplication.models.SourcesResponse
 import com.example.myapplication.models.TopHeadlines

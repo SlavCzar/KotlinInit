@@ -3,8 +3,8 @@ package com.example.myapplication.repositories
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.example.myapplication.ApiService
-import com.example.myapplication.BASE_URL
+import com.example.myapplication.network.ApiService
+import com.example.myapplication.network.BASE_URL
 import com.example.myapplication.models.SourceX
 import com.example.myapplication.models.SourcesResponse
 import retrofit2.Call
