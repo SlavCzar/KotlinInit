@@ -37,7 +37,7 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recycler_headlines.layoutManager = LinearLayoutManager(activity)
+        recycler_top_headlines.layoutManager = LinearLayoutManager(activity)
         articleViewModel = ViewModelProvider(this).get(NewsArticleViewModel::class.java)
         adapter = activity?.let { HeadlinesAdapter(articleViewModel) }!!
         if(!isAdded)
@@ -46,9 +46,18 @@ class FirstFragment : Fragment() {
 
         articleViewModel.networkStateIndicator.observe(viewLifecycleOwner, Observer {networkState->
              when(networkState){
-                 is NetworkStateResource.Error -> Log.e(TAG, "ERROR: ${networkState.message}")
-                 is NetworkStateResource.Success -> d(TAG, "SUCCESS ")
-                 is NetworkStateResource.Loading -> d(TAG, "LOADING: ")
+                 is NetworkStateResource.Error ->{
+                     showErrorLayout()
+                     Log.e(TAG, "ERROR: ${networkState.message}")
+                 }
+                 is NetworkStateResource.Success ->{
+                     showNewsItems()
+                     d(TAG, "SUCCESS ")
+                 }
+                 is NetworkStateResource.Loading ->{
+                     showLoadingScreen()
+                     d(TAG, "LOADING: ")
+                 }
              }
 
         })
@@ -56,8 +65,24 @@ class FirstFragment : Fragment() {
         articleViewModel.headlinesPagedList.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
-        recycler_headlines.adapter = adapter
+        recycler_top_headlines.adapter = adapter
 
+    }
+
+    private fun showLoadingScreen() {
+
+    }
+
+    private fun showNewsItems() {
+        recycler_top_headlines.visibility = View.VISIBLE
+        errorImageTopHeadlines.visibility = View.INVISIBLE
+        errorTextTopHeadlines.visibility = View.INVISIBLE
+    }
+
+    private fun showErrorLayout() {
+        recycler_top_headlines.visibility = View.INVISIBLE
+        errorImageTopHeadlines.visibility = View.VISIBLE
+        errorTextTopHeadlines.visibility = View.VISIBLE
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

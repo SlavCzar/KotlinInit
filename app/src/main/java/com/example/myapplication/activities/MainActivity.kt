@@ -1,25 +1,49 @@
 package com.example.myapplication.activities
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import android.widget.SearchView
-import android.widget.Toast
-import androidx.appcompat.widget.SearchView.OnQueryTextListener
-import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.adapters.TabLayoutPagerAdapter
 import com.example.myapplication.viewmodels.NewsArticleViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import kotlinx.android.synthetic.main.fragment_first.*
+import kotlinx.android.synthetic.main.fragment_second.*
+import kotlinx.android.synthetic.main.fragment_third.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var articleViewModel: NewsArticleViewModel
+
+    private var broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val notConnected = intent.getBooleanExtra(
+                ConnectivityManager
+                .EXTRA_NO_CONNECTIVITY, false)
+            if (notConnected) {
+                showErrorLayout()
+            } else {
+                showNewsItems()
+            }
+        }
+    }
+
+    private fun showNewsItems() {
+        recycler_top_headlines.visibility = View.VISIBLE
+        recycler_categorical.visibility = View.VISIBLE
+        recycler_saved_news.visibility = View.VISIBLE
+    }
+
+    private fun showErrorLayout() {
+        recycler_top_headlines.visibility = View.INVISIBLE
+        recycler_categorical.visibility = View.INVISIBLE
+        recycler_saved_news.visibility = View.INVISIBLE
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

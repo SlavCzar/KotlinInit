@@ -8,12 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.adapters.HeadlinesAdapter
 import com.example.myapplication.databinding.FragmentThirdBinding
 import com.example.myapplication.viewmodels.NewsArticleViewModel
-import kotlinx.android.synthetic.main.fragment_second.*
 import kotlinx.android.synthetic.main.fragment_third.*
 
 class ThirdFragment : Fragment() {
@@ -43,11 +41,33 @@ class ThirdFragment : Fragment() {
             return
 
         articleViewModel.savedHeadlinesList.observe(viewLifecycleOwner, Observer {
-            adapter.submitList(it)
+            if(it==null || it.size == 0)
+                showEmptyStateLayout()
+            else
+            {
+                showSavedNewsItems()
+                adapter.submitList(it)
+            }
+
         })
 
-        recycler_saved.layoutManager = LinearLayoutManager(activity)
-        recycler_saved.adapter = adapter
+        recycler_saved_news.layoutManager = LinearLayoutManager(activity)
+        recycler_saved_news.adapter = adapter
 
     }
+
+    private fun showSavedNewsItems() {
+        emptyStateImage.visibility = View.INVISIBLE
+        emptyStateText.visibility = View.INVISIBLE
+        recycler_saved_news.visibility = View.VISIBLE
+
+    }
+
+    private fun showEmptyStateLayout() {
+        recycler_saved_news.visibility = View.INVISIBLE
+        emptyStateImage.visibility = View.VISIBLE
+        emptyStateText.visibility = View.VISIBLE
+    }
+
+
 }

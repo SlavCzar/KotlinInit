@@ -2,6 +2,7 @@
 package com.example.myapplication.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.util.Log.d
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -11,8 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.adapters.HeadlinesAdapter
 import com.example.myapplication.databinding.FragmentSecondBinding
+import com.example.myapplication.network.NetworkStateResource
 import com.example.myapplication.viewmodels.NewsArticleViewModel
 import com.google.android.material.chip.ChipGroup
+import kotlinx.android.synthetic.main.fragment_first.*
 import kotlinx.android.synthetic.main.fragment_second.*
 
 private const val TAG = "SecondFragment"
@@ -35,7 +38,7 @@ class SecondFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recycler_everything.layoutManager = LinearLayoutManager(activity)
+        recycler_categorical.layoutManager = LinearLayoutManager(activity)
         articleViewModel = ViewModelProvider(this).get(NewsArticleViewModel::class.java)
         adapter = activity?.let { HeadlinesAdapter(articleViewModel) }!!
         if(!isAdded)
@@ -46,6 +49,24 @@ class SecondFragment : Fragment() {
 //            category = null
 //        )
 
+        articleViewModel.networkStateIndicator.observe(viewLifecycleOwner, Observer {networkState->
+            when(networkState){
+                is NetworkStateResource.Error ->{
+                    showErrorLayout()
+                    Log.e(TAG, "ERROR: ${networkState.message}")
+                }
+                is NetworkStateResource.Success ->{
+                    showNewsItems()
+                    d(TAG, "SUCCESS ")
+                }
+                is NetworkStateResource.Loading ->{
+                    showLoadingScreen()
+                    d(TAG, "LOADING: ")
+                }
+            }
+
+        })
+
         articleViewModel.categoricalHeadlinesList.observe(viewLifecycleOwner, Observer {
             if(it!=null && isAdded)
             {
@@ -53,7 +74,7 @@ class SecondFragment : Fragment() {
                 adapter.submitList(it)
             }
         });
-        recycler_everything.adapter = adapter
+        recycler_categorical.adapter = adapter
         chipGroup.setOnCheckedChangeListener(object : ChipGroup.OnCheckedChangeListener{
             override fun onCheckedChanged(group: ChipGroup?, checkedId: Int) {
                 when(checkedId){
@@ -72,7 +93,20 @@ class SecondFragment : Fragment() {
 
         })
 
+    }
+    private fun showLoadingScreen() {
 
+    }
 
+    private fun showNewsItems() {
+        recycler_categorical.visibility = View.VISIBLE
+        errorImageCategorical.visibility = View.INVISIBLE
+        errorTextCategorical.visibility = View.INVISIBLE
+    }
+
+    private fun showErrorLayout() {
+        recycler_categorical.visibility = View.INVISIBLE
+        errorImageCategorical.visibility = View.VISIBLE
+        errorTextCategorical.visibility = View.VISIBLE
     }
 }

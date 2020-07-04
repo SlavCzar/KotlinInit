@@ -7,8 +7,9 @@
     android:layout_gravity="bottom|end">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_everything"
+        android:id="@+id/recycler_categorical"
         android:layout_width="match_parent"
+        android:visibility="invisible"
         android:layout_height="0dp"
         android:padding="8dp"
         android:layout_margin="15dp"
@@ -23,6 +24,7 @@
         android:id="@+id/chipGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:singleSelection="true"
@@ -73,6 +75,32 @@
             android:text="Science"
             />
     </com.google.android.material.chip.ChipGroup>
+
+    <ImageView
+        android:id="@+id/errorImageCategorical"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:foregroundGravity="center_horizontal"
+        android:src="@drawable/error"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <TextView
+        android:id="@+id/errorTextCategorical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:textSize="20sp"
+        android:layout_margin="20dp"
+        android:textStyle="italic"
+        android:text="Aw, snap! A network error ocurred...\n       Check internet connectivity"
+        app:layout_constraintEnd_toEndOf="@+id/errorImageCategorical"
+        app:layout_constraintStart_toStartOf="@+id/errorImageCategorical"
+        app:layout_constraintTop_toBottomOf="@+id/errorImageCategorical" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
