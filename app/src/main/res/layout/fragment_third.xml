@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="bottom|end">
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_saved_news"
         android:layout_width="0dp"

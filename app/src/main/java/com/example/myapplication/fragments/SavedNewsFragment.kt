@@ -14,7 +14,7 @@ import com.example.myapplication.databinding.FragmentThirdBinding
 import com.example.myapplication.viewmodels.NewsArticleViewModel
 import kotlinx.android.synthetic.main.fragment_third.*
 
-class ThirdFragment : Fragment() {
+class SavedNewsFragment : Fragment() {
     private var _binding: FragmentThirdBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.

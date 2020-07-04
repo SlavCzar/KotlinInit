@@ -69,17 +69,34 @@ class FirstFragment : Fragment() {
 
     }
 
-    private fun showLoadingScreen() {
+    override fun onResume() {
+        super.onResume()
+        shimmer_frame_layout_top_headlines.startShimmer()
+    }
 
+    override fun onPause() {
+        shimmer_frame_layout_top_headlines.stopShimmer()
+        super.onPause()
+    }
+
+    private fun showLoadingScreen() {
+        shimmer_frame_layout_top_headlines.startShimmer()
+        recycler_top_headlines.visibility = View.INVISIBLE
+        errorImageTopHeadlines.visibility = View.INVISIBLE
+        errorTextTopHeadlines.visibility = View.INVISIBLE
     }
 
     private fun showNewsItems() {
+        shimmer_frame_layout_top_headlines.stopShimmer()
+        shimmer_frame_layout_top_headlines.visibility = View.INVISIBLE
         recycler_top_headlines.visibility = View.VISIBLE
         errorImageTopHeadlines.visibility = View.INVISIBLE
         errorTextTopHeadlines.visibility = View.INVISIBLE
     }
 
     private fun showErrorLayout() {
+        shimmer_frame_layout_top_headlines.stopShimmer()
+        shimmer_frame_layout_top_headlines.visibility = View.INVISIBLE
         recycler_top_headlines.visibility = View.INVISIBLE
         errorImageTopHeadlines.visibility = View.VISIBLE
         errorTextTopHeadlines.visibility = View.VISIBLE

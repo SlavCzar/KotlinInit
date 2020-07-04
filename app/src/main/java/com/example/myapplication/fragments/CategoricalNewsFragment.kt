@@ -43,11 +43,6 @@ class SecondFragment : Fragment() {
         adapter = activity?.let { HeadlinesAdapter(articleViewModel) }!!
         if(!isAdded)
             return
-//
-//        articleViewModel.getAllHeadlines(
-//            source = "the-times-of-india,the-hindu,bbc-news",
-//            category = null
-//        )
 
         articleViewModel.networkStateIndicator.observe(viewLifecycleOwner, Observer {networkState->
             when(networkState){
@@ -94,17 +89,38 @@ class SecondFragment : Fragment() {
         })
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        shimmer_frame_layout_categorical.startShimmer()
+    }
+    override fun onPause() {
+        shimmer_frame_layout_categorical.stopShimmer()
+        super.onPause()
+    }
+
+
+
     private fun showLoadingScreen() {
+
+        shimmer_frame_layout_categorical.startShimmer()
+        recycler_categorical.visibility = View.INVISIBLE
+        errorImageCategorical.visibility = View.INVISIBLE
+        errorTextCategorical.visibility = View.INVISIBLE
 
     }
 
     private fun showNewsItems() {
+        shimmer_frame_layout_categorical.stopShimmer()
+        shimmer_frame_layout_categorical.visibility =View.INVISIBLE
         recycler_categorical.visibility = View.VISIBLE
         errorImageCategorical.visibility = View.INVISIBLE
         errorTextCategorical.visibility = View.INVISIBLE
     }
 
     private fun showErrorLayout() {
+        shimmer_frame_layout_categorical.stopShimmer()
+        shimmer_frame_layout_categorical.visibility =View.INVISIBLE
         recycler_categorical.visibility = View.INVISIBLE
         errorImageCategorical.visibility = View.VISIBLE
         errorTextCategorical.visibility = View.VISIBLE

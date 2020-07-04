@@ -5,14 +5,14 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.example.myapplication.fragments.FirstFragment
 import com.example.myapplication.fragments.SecondFragment
-import com.example.myapplication.fragments.ThirdFragment
+import com.example.myapplication.fragments.SavedNewsFragment
 
 class TabLayoutPagerAdapter(fm : FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {
         return when(position){
             0 -> FirstFragment()
             1 -> SecondFragment()
-            else -> ThirdFragment()
+            else -> SavedNewsFragment()
         }
     }
 
