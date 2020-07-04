@@ -9,6 +9,7 @@ import com.example.myapplication.network.BASE_URL
 import com.example.myapplication.db.NewsDatabase
 import com.example.myapplication.models.News
 import com.example.myapplication.models.TopHeadlines
+import com.example.myapplication.network.toSimpleCall
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

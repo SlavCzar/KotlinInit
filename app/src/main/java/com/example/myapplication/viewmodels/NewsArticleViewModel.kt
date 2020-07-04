@@ -9,10 +9,11 @@ import androidx.lifecycle.*
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.example.myapplication.adapters.NewsDataSource
+import com.example.myapplication.adapters.TopHeadlinesDataSource
 import com.example.myapplication.models.News
 import com.example.myapplication.models.TopHeadlines
 import com.example.myapplication.network.NetworkStateResource
+import com.example.myapplication.network.SearchEverythingDataSource
 import com.example.myapplication.repositories.NewsRepository
 import retrofit2.Response
 
@@ -35,16 +36,15 @@ public class NewsArticleViewModel(application : Application) : AndroidViewModel(
         headlinesPagedList = Transformations.switchMap(searchQueryLiveData,object :Function<String,LiveData<PagedList<News>>>{
             override fun apply(input: String?): LiveData<PagedList<News>> {
                 if (input == null || input == "" || input == "%%")
-                    return initialisePagedListBuilder(
+                    return topHeadlinesPagedListBuilder(
                         searchQuery = null,
                         category = null,
                         config = config,
                         networkStateIndicator = networkStateIndicator
                     ).build()
                 else
-                    return initialisePagedListBuilder(
+                    return searchEverythingPagedListBuilder(
                         searchQuery = input,
-                        category = null,
                         config = config,
                         networkStateIndicator = networkStateIndicator
                     ).build()
@@ -58,9 +58,9 @@ public class NewsArticleViewModel(application : Application) : AndroidViewModel(
                     d("switchmap",input)
                 }
                 if (input == null || input == "" || input == "%%")
-                    return initialisePagedListBuilder(searchQuery = null ,category = null,config = config,networkStateIndicator = networkStateIndicator).build()
+                    return topHeadlinesPagedListBuilder(searchQuery = null ,category = null,config = config,networkStateIndicator = networkStateIndicator).build()
                 else
-                    return initialisePagedListBuilder(
+                    return topHeadlinesPagedListBuilder(
                         category = input,
                         config = config,
                         networkStateIndicator = networkStateIndicator
@@ -68,7 +68,7 @@ public class NewsArticleViewModel(application : Application) : AndroidViewModel(
             }
         })
     }
-    private fun initialisePagedListBuilder(
+    private fun topHeadlinesPagedListBuilder(
         searchQuery: String? = null,
         category: String? = null,
         config: PagedList.Config?,
@@ -77,7 +77,21 @@ public class NewsArticleViewModel(application : Application) : AndroidViewModel(
         val dataSourceFactory = object : DataSource.Factory<Int,News>(){
             override fun create(): DataSource<Int, News> {
                 Log.d("ViewModel","Fetching Data from datasource")
-                return NewsDataSource(searchQuery,category,viewModelScope,networkStateIndicator)
+                return TopHeadlinesDataSource(searchQuery,category,viewModelScope,networkStateIndicator)
+            }
+        }
+        return LivePagedListBuilder<Int,News>(dataSourceFactory, config!!)
+    }
+    private fun searchEverythingPagedListBuilder(
+        searchQuery: String? = null,
+        category: String? = null,
+        config: PagedList.Config?,
+        networkStateIndicator: MutableLiveData<NetworkStateResource<Response<TopHeadlines>>>
+    ): LivePagedListBuilder<Int,News> {
+        val dataSourceFactory = object : DataSource.Factory<Int,News>(){
+            override fun create(): DataSource<Int, News> {
+                Log.d("ViewModel","Fetching Data from datasource")
+                return SearchEverythingDataSource(searchQuery,viewModelScope,networkStateIndicator)
             }
         }
         return LivePagedListBuilder<Int,News>(dataSourceFactory, config!!)
