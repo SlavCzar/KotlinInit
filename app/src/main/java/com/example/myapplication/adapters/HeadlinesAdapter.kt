@@ -40,17 +40,28 @@ class HeadlinesAdapter(private val viewModel: NewsArticleViewModel): PagedListAd
     override fun onBindViewHolder(holder: HeadlineViewHolder, position: Int) {
         val currentItem = getItem(position)
         currentItem?.let {holder.bindTo(it)}
+        if(currentItem?.isSaved==1)
+            holder.saveBtn.setImageResource(drawableSaved)
+        else
+            holder.saveBtn.setImageResource(drawableUnsaved)
         holder.saveBtn.setOnClickListener {
             Log.d("Bruh", "clicked save button")
             //tried checking for the imageDrawable to get saved/unsaved status but assigning tag to imageView does the trick in getting/setting the state
             if (holder.saveBtn.tag.equals("unsaved")) {
                 Log.d("adapter", "Now inserting in db")
-                currentItem?.let { it1 -> articleViewModel.insertNewsInDb(it1) }
+                currentItem?.let { it1 ->
+                    articleViewModel.insertNewsInDb(it1)
+                    it1.isSaved = 1
+                }
+
                 holder.saveBtn.setImageResource(drawableSaved)
                 holder.saveBtn.tag = "saved"
             } else {
                 Log.d("adapter", "Now deleting from db")
-                currentItem?.let { it1 -> articleViewModel.deleteNewsFromDb(it1) }
+                currentItem?.let { it1 ->
+                    articleViewModel.deleteNewsFromDb(it1)
+                    it1.isSaved = 0
+                }
                 holder.saveBtn.setImageResource(drawableUnsaved)
                 holder.saveBtn.tag = "unsaved"
             }
@@ -83,7 +94,10 @@ class HeadlinesAdapter(private val viewModel: NewsArticleViewModel): PagedListAd
 
             }
 
+            if(news.isSaved==0)
             saveBtn.tag = "unsaved"
+            else
+                saveBtn.tag = "saved"
 
         }
         }

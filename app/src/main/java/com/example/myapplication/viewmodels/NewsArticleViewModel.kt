@@ -14,7 +14,7 @@ import com.example.myapplication.models.News
 import com.example.myapplication.models.TopHeadlines
 import com.example.myapplication.network.NetworkStateResource
 import com.example.myapplication.network.SearchEverythingDataSource
-import com.example.myapplication.repositories.NewsRepository
+import com.example.myapplication.repositories.NewsArticleRepository
 import retrofit2.Response
 
 public class NewsArticleViewModel(application : Application) : AndroidViewModel(application) {
@@ -24,8 +24,10 @@ public class NewsArticleViewModel(application : Application) : AndroidViewModel(
     var searchQueryLiveData = MutableLiveData<String>()
     var categoryLiveData = MutableLiveData<String>()
     var categoricalHeadlinesList :LiveData<PagedList<News>>
+    var savedHeadlinesList :LiveData<PagedList<News>>
     var networkStateIndicator : MutableLiveData<NetworkStateResource<Response<TopHeadlines>>> = MutableLiveData()
     val config : PagedList.Config
+    private val newsRepository = NewsArticleRepository(application)
 
     init {
         //start loading the data
@@ -67,6 +69,8 @@ public class NewsArticleViewModel(application : Application) : AndroidViewModel(
                     ).build()
             }
         })
+
+        savedHeadlinesList = LivePagedListBuilder<Int,News>(newsRepository.getSavedNews() as DataSource.Factory<Int, News>, PAGE_SIZE).build()
     }
     private fun topHeadlinesPagedListBuilder(
         searchQuery: String? = null,
@@ -99,7 +103,6 @@ public class NewsArticleViewModel(application : Application) : AndroidViewModel(
 
 
 
-    private val newsRepository = NewsRepository(application)
 
     init {
        this.newsList = newsRepository.newsList

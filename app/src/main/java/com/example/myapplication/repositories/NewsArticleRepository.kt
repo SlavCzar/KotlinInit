@@ -3,7 +3,9 @@ package com.example.myapplication.repositories
 import android.app.Application
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.DataSource
 import com.example.myapplication.network.ApiService
 import com.example.myapplication.network.BASE_URL
 import com.example.myapplication.db.NewsDatabase
@@ -19,7 +21,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 private const val TAG = "NewsRepository"
-class NewsRepository(val application: Application) {
+class NewsArticleRepository(val application: Application) {
 
     val mIoExecutor: ExecutorService = Executors.newSingleThreadExecutor()
 //    val newsDatabase : NewsDatabase = NewsDatabase.getInstance(application)
@@ -53,6 +55,10 @@ class NewsRepository(val application: Application) {
         })
     }
 
+    fun getSavedNews(): DataSource.Factory<Int, News>?
+    {
+        return database.newsDao()?.getSavedNews()
+    }
     fun insertNews(news: News)
     {
         mIoExecutor.execute {

@@ -1,6 +1,7 @@
 package com.example.myapplication.db
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import androidx.room.*
 import com.example.myapplication.models.News
 
@@ -14,7 +15,7 @@ public interface NewsDao {
     fun updateNews(news : News)
 
     @Query("SELECT * FROM news_table")
-    fun getAllNews() : LiveData<List<News>>
+    fun getSavedNews() : DataSource.Factory<Int,News>
 
     @Delete
     fun deleteNews(currentItem: News)
