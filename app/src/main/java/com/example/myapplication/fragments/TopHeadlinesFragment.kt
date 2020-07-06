@@ -1,5 +1,4 @@
 package com.example.myapplication.fragments
-
 import android.os.Bundle
 import android.util.Log
 import android.util.Log.d
@@ -10,15 +9,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.adapters.HeadlinesAdapter
-import com.example.myapplication.databinding.FragmentFirstBinding
+import com.example.myapplication.databinding.FragmentTopHeadlinesBinding
 import com.example.myapplication.network.NetworkStateResource
 import com.example.myapplication.viewmodels.NewsArticleViewModel
-import kotlinx.android.synthetic.main.fragment_first.*
+import kotlinx.android.synthetic.main.fragment_top_headlines.*
 
 private const val TAG = "FirstFragment"
 class FirstFragment : Fragment() {
 
-    private var _binding: FragmentFirstBinding? = null
+    private var _binding: FragmentTopHeadlinesBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -29,7 +28,7 @@ class FirstFragment : Fragment() {
     ): View? {
         setHasOptionsMenu(true)
         d("Swiped","first Fragment")
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        _binding = FragmentTopHeadlinesBinding.inflate(inflater, container, false)
         val view = binding.root
         return view
     }

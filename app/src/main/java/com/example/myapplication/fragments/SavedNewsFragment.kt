@@ -10,12 +10,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.adapters.HeadlinesAdapter
-import com.example.myapplication.databinding.FragmentThirdBinding
+import com.example.myapplication.databinding.FragmentSavedNewsBinding
 import com.example.myapplication.viewmodels.NewsArticleViewModel
-import kotlinx.android.synthetic.main.fragment_third.*
+import kotlinx.android.synthetic.main.fragment_saved_news.*
+import kotlinx.android.synthetic.main.fragment_saved_news.*
 
 class SavedNewsFragment : Fragment() {
-    private var _binding: FragmentThirdBinding? = null
+    private var _binding: FragmentSavedNewsBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -26,7 +27,7 @@ class SavedNewsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?
     ): View? {
         d("Swiped","third Fragment")
-        _binding = FragmentThirdBinding.inflate(inflater, container, false)
+        _binding = FragmentSavedNewsBinding.inflate(inflater, container, false)
         val view = binding.root
         return view
     }

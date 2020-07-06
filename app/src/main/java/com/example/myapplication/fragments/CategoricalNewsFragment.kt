@@ -11,17 +11,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.adapters.HeadlinesAdapter
-import com.example.myapplication.databinding.FragmentSecondBinding
+import com.example.myapplication.databinding.FragmentCategoricalHeadlinesBinding
 import com.example.myapplication.network.NetworkStateResource
 import com.example.myapplication.viewmodels.NewsArticleViewModel
 import com.google.android.material.chip.ChipGroup
-import kotlinx.android.synthetic.main.fragment_first.*
-import kotlinx.android.synthetic.main.fragment_second.*
+import kotlinx.android.synthetic.main.fragment_categorical_headlines.*
 
 private const val TAG = "SecondFragment"
 class SecondFragment : Fragment() {
 
-    private var _binding: FragmentSecondBinding? = null
+    private var _binding: FragmentCategoricalHeadlinesBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -31,7 +30,7 @@ class SecondFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
         d("Swiped","Second Fragment")
-        _binding = FragmentSecondBinding.inflate(inflater, container, false)
+        _binding = FragmentCategoricalHeadlinesBinding.inflate(inflater, container, false)
         val view = binding.root
         return view
     }
@@ -108,11 +107,13 @@ class SecondFragment : Fragment() {
         errorImageCategorical.visibility = View.INVISIBLE
         errorTextCategorical.visibility = View.INVISIBLE
 
+
     }
 
     private fun showNewsItems() {
         shimmer_frame_layout_categorical.stopShimmer()
         shimmer_frame_layout_categorical.visibility =View.INVISIBLE
+        chipGroup.visibility = View.VISIBLE
         recycler_categorical.visibility = View.VISIBLE
         errorImageCategorical.visibility = View.INVISIBLE
         errorTextCategorical.visibility = View.INVISIBLE
@@ -121,6 +122,7 @@ class SecondFragment : Fragment() {
     private fun showErrorLayout() {
         shimmer_frame_layout_categorical.stopShimmer()
         shimmer_frame_layout_categorical.visibility =View.INVISIBLE
+        chipGroup.visibility = View.INVISIBLE
         recycler_categorical.visibility = View.INVISIBLE
         errorImageCategorical.visibility = View.VISIBLE
         errorTextCategorical.visibility = View.VISIBLE

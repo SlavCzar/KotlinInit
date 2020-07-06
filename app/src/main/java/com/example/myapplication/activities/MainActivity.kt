@@ -11,9 +11,10 @@ import com.example.myapplication.R
 import com.example.myapplication.adapters.TabLayoutPagerAdapter
 import com.example.myapplication.viewmodels.NewsArticleViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_first.*
-import kotlinx.android.synthetic.main.fragment_second.*
-import kotlinx.android.synthetic.main.fragment_third.*
+import kotlinx.android.synthetic.main.fragment_categorical_headlines.*
+import kotlinx.android.synthetic.main.fragment_saved_news.*
+import kotlinx.android.synthetic.main.fragment_top_headlines.*
+
 
 class MainActivity : AppCompatActivity() {
 
