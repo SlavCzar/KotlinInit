@@ -23,11 +23,10 @@
 
     <ImageView
         android:id="@+id/emptyStateImage"
-        android:layout_width="220dp"
-        android:layout_height="220dp"
-
+        android:layout_width="230dp"
+        android:layout_height="230dp"
         android:foregroundGravity="center_horizontal"
-        android:src="@drawable/empty"
+        android:src="@drawable/ic_empty_amico"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="invisible"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:layout_margin="20dp"
         android:textStyle="italic"
         android:text="Nothing saved yet!..."
