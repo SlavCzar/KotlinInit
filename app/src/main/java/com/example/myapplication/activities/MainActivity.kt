@@ -20,19 +20,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var articleViewModel: NewsArticleViewModel
 
-    private var broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            val notConnected = intent.getBooleanExtra(
-                ConnectivityManager
-                .EXTRA_NO_CONNECTIVITY, false)
-            if (notConnected) {
-                showErrorLayout()
-            } else {
-                showNewsItems()
-            }
-        }
-    }
-
     private fun showNewsItems() {
         recycler_top_headlines.visibility = View.VISIBLE
         recycler_categorical.visibility = View.VISIBLE
@@ -52,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         val fragmentAdapter = TabLayoutPagerAdapter(supportFragmentManager)
         viewpager_main.adapter = fragmentAdapter
+        viewpager_main.offscreenPageLimit = 3
 
         tab_layout_main.setupWithViewPager(viewpager_main)
 
