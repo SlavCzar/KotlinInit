@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipe_refresh_categorical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="bottom|end">
@@ -47,65 +46,69 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chipGroup"
+        app:layout_constraintTop_toBottomOf="@+id/scroll_chip_group"
         tools:listitem="@layout/item_recycler_everything" />
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/chipGroup"
-        android:layout_width="wrap_content"
+    <HorizontalScrollView
+        android:id="@+id/scroll_chip_group"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
-        android:orientation="horizontal"
+        android:padding="10dp"
+        android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
-        app:singleSelection="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_all"
-            android:checked="true"
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checkable="true"
-            android:text="All"
-            />
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_entertainment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checkable="true"
-            android:text="Entertainment"
-            />
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_business"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checkable="true"
-            android:text="Business"
-            />
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_sports"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checkable="true"
-            android:text="Sports"
-            />
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_tech"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checkable="true"
-            android:text="Tech"
-            />
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_science"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checkable="true"
-            android:text="Science"
-            />
-    </com.google.android.material.chip.ChipGroup>
+            android:orientation="horizontal"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:singleSelection="true">
 
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:checked="true"
+                android:text="All" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_science"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="Science" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_sports"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="Sports" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_entertainment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="Entertainment" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_business"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="Business" />
+
+
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
     <ImageView
         android:id="@+id/errorImageCategorical"
         android:layout_width="250dp"

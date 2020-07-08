@@ -79,7 +79,6 @@ class SecondFragment : Fragment(),SwipeRefreshLayout.OnRefreshListener {
                 when(checkedId){
                     R.id.chip_all -> articleViewModel.categoryLiveData.postValue("general")
                     R.id.chip_business -> articleViewModel.categoryLiveData.postValue("business")
-                    R.id.chip_tech -> articleViewModel.categoryLiveData.postValue("tech")
                     R.id.chip_sports -> articleViewModel.categoryLiveData.postValue("sports")
                     R.id.chip_entertainment -> articleViewModel.categoryLiveData.postValue( "entertainment")
                     R.id.chip_science -> articleViewModel.categoryLiveData.postValue( "science")
