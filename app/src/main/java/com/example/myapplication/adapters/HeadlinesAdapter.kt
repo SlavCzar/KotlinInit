@@ -12,6 +12,7 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.activities.NewsWebActivity
 import com.example.myapplication.databinding.ItemRecyclerEverythingBinding
@@ -80,7 +81,7 @@ class HeadlinesAdapter(private val viewModel: NewsArticleViewModel): PagedListAd
             if (news.urlToImage == "")
                 imageView.setImageResource(R.drawable.ic_launcher_foreground)
             else
-                Picasso.with(itemView.context).load(news.urlToImage)
+                Glide.with(itemView.context).load(news.urlToImage)
                     .placeholder(R.drawable.ic_launcher_background)
                     .error(R.drawable.ic_launcher_foreground)
                     .into(imageView)

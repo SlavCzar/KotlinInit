@@ -26,6 +26,7 @@ interface ApiService {
     @GET("everything")
     fun getEverything(@Query("q")searchQuery:String?=null, @Query("language")language : String?=null,
                         @Query("sources")source: String?=null, @Query("apiKey")apiKey: String,
+                      @Query("sortBy")sortBy: String = "publishedAt",
                         @Query("page")page: Int,@Query("pageSize")pageSize: Int) : Call<TopHeadlines>
 
     @GET("sources")

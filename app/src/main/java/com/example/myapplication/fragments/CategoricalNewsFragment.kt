@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.myapplication.R
 import com.example.myapplication.adapters.HeadlinesAdapter
 import com.example.myapplication.databinding.FragmentCategoricalHeadlinesBinding
@@ -18,7 +19,7 @@ import com.google.android.material.chip.ChipGroup
 import kotlinx.android.synthetic.main.fragment_categorical_headlines.*
 
 private const val TAG = "SecondFragment"
-class SecondFragment : Fragment() {
+class SecondFragment : Fragment(),SwipeRefreshLayout.OnRefreshListener {
 
     private var _binding: FragmentCategoricalHeadlinesBinding? = null
     // This property is only valid between onCreateView and
@@ -37,6 +38,8 @@ class SecondFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        swipe_refresh_categorical.setOnRefreshListener(this)
         recycler_categorical.layoutManager = LinearLayoutManager(activity)
         articleViewModel = ViewModelProvider(this).get(NewsArticleViewModel::class.java)
         adapter = activity?.let { HeadlinesAdapter(articleViewModel) }!!
@@ -46,10 +49,12 @@ class SecondFragment : Fragment() {
         articleViewModel.networkStateIndicator.observe(viewLifecycleOwner, Observer {networkState->
             when(networkState){
                 is NetworkStateResource.Error ->{
+                    swipe_refresh_categorical.isRefreshing = false
                     showErrorLayout()
                     Log.e(TAG, "ERROR: ${networkState.message}")
                 }
                 is NetworkStateResource.Success ->{
+                    swipe_refresh_categorical.isRefreshing = false
                     showNewsItems()
                     d(TAG, "SUCCESS ")
                 }
@@ -126,5 +131,9 @@ class SecondFragment : Fragment() {
         recycler_categorical.visibility = View.INVISIBLE
         errorImageCategorical.visibility = View.VISIBLE
         errorTextCategorical.visibility = View.VISIBLE
+    }
+
+    override fun onRefresh() {
+        articleViewModel.categoricalHeadlinesList.value?.dataSource?.invalidate()
     }
 }

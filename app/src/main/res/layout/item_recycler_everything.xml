@@ -39,6 +39,7 @@
                 android:text="This is a news headline"
                 android:textSize="14sp"
                 android:textStyle="bold"
+                android:textColor="@color/black"
                 android:visibility="visible"
                 app:layout_constraintEnd_toStartOf="@+id/saveBtn"
                 app:layout_constraintHorizontal_bias="0.036"

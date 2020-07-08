@@ -2,24 +2,23 @@ package com.example.myapplication.viewmodels
 
 import android.app.Application
 import android.nfc.tech.MifareUltralight.PAGE_SIZE
-import android.util.Log
 import android.util.Log.d
 import androidx.arch.core.util.Function
 import androidx.lifecycle.*
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.example.myapplication.adapters.SearchEverythingFactory
 import com.example.myapplication.adapters.TopHeadlinesDataSource
+import com.example.myapplication.adapters.TopHeadlinesFactory
 import com.example.myapplication.models.News
 import com.example.myapplication.models.TopHeadlines
 import com.example.myapplication.network.NetworkStateResource
-import com.example.myapplication.network.SearchEverythingDataSource
 import com.example.myapplication.repositories.NewsArticleRepository
 import retrofit2.Response
 
 public class NewsArticleViewModel(application : Application) : AndroidViewModel(application) {
 
-    val newsList : LiveData<List<News>>
     var headlinesPagedList  :LiveData<PagedList<News>>
     var searchQueryLiveData = MutableLiveData<String>()
     var categoryLiveData = MutableLiveData<String>()
@@ -27,6 +26,7 @@ public class NewsArticleViewModel(application : Application) : AndroidViewModel(
     var savedHeadlinesList :LiveData<PagedList<News>>
     var networkStateIndicator : MutableLiveData<NetworkStateResource<Response<TopHeadlines>>> = MutableLiveData()
     val config : PagedList.Config
+    var dataSourceLiveData: MutableLiveData<TopHeadlinesDataSource> = MutableLiveData<TopHeadlinesDataSource>()
     private val newsRepository = NewsArticleRepository(application)
 
     init {
@@ -59,7 +59,7 @@ public class NewsArticleViewModel(application : Application) : AndroidViewModel(
                 if(input!=null) {
                     d("switchmap",input)
                 }
-                if (input == null || input == "" || input == "%%")
+                if (input == null || input == "")
                     return topHeadlinesPagedListBuilder(searchQuery = null ,category = null,config = config,networkStateIndicator = networkStateIndicator).build()
                 else
                     return topHeadlinesPagedListBuilder(
@@ -69,22 +69,14 @@ public class NewsArticleViewModel(application : Application) : AndroidViewModel(
                     ).build()
             }
         })
-
         savedHeadlinesList = LivePagedListBuilder<Int,News>(newsRepository.getSavedNews() as DataSource.Factory<Int, News>, PAGE_SIZE).build()
     }
-    private fun topHeadlinesPagedListBuilder(
-        searchQuery: String? = null,
-        category: String? = null,
-        config: PagedList.Config?,
-        networkStateIndicator: MutableLiveData<NetworkStateResource<Response<TopHeadlines>>>
+    private fun topHeadlinesPagedListBuilder(searchQuery: String? = null, category: String? = null,
+        config: PagedList.Config?,networkStateIndicator: MutableLiveData<NetworkStateResource<Response<TopHeadlines>>>
     ): LivePagedListBuilder<Int,News> {
-        val dataSourceFactory = object : DataSource.Factory<Int,News>(){
-            override fun create(): DataSource<Int, News> {
-                Log.d("ViewModel","Fetching Data from datasource")
-                return TopHeadlinesDataSource(searchQuery,category,viewModelScope,networkStateIndicator)
-            }
-        }
-        return LivePagedListBuilder<Int,News>(dataSourceFactory, config!!)
+        val factory = TopHeadlinesFactory(searchQuery = searchQuery,scope = viewModelScope,category = category,
+            networkStateIndicator = networkStateIndicator)
+        return LivePagedListBuilder<Int,News>(factory,config!!)
     }
     private fun searchEverythingPagedListBuilder(
         searchQuery: String? = null,
@@ -92,22 +84,14 @@ public class NewsArticleViewModel(application : Application) : AndroidViewModel(
         config: PagedList.Config?,
         networkStateIndicator: MutableLiveData<NetworkStateResource<Response<TopHeadlines>>>
     ): LivePagedListBuilder<Int,News> {
-        val dataSourceFactory = object : DataSource.Factory<Int,News>(){
-            override fun create(): DataSource<Int, News> {
-                Log.d("ViewModel","Fetching Data from datasource")
-                return SearchEverythingDataSource(searchQuery,viewModelScope,networkStateIndicator)
-            }
-        }
+        val dataSourceFactory = SearchEverythingFactory(searchQuery = searchQuery,scope = viewModelScope,
+        networkStateIndicator = networkStateIndicator)
         return LivePagedListBuilder<Int,News>(dataSourceFactory, config!!)
     }
-
-
-
-
-    init {
-       this.newsList = newsRepository.newsList
+    fun refreshData()
+    {
+        dataSourceLiveData.value?.invalidate()
     }
-
 
     public fun getAllHeadlines(
         searchQuery: String? = null, country: String? = null,

@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.myapplication.R
 import com.example.myapplication.adapters.HeadlinesAdapter
 import com.example.myapplication.databinding.FragmentTopHeadlinesBinding
@@ -15,7 +16,7 @@ import com.example.myapplication.viewmodels.NewsArticleViewModel
 import kotlinx.android.synthetic.main.fragment_top_headlines.*
 
 private const val TAG = "FirstFragment"
-class FirstFragment : Fragment() {
+class FirstFragment : Fragment(),SwipeRefreshLayout.OnRefreshListener {
 
     private var _binding: FragmentTopHeadlinesBinding? = null
     // This property is only valid between onCreateView and
@@ -36,20 +37,22 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        swipe_refresh_top_headlines.setOnRefreshListener(this)
         recycler_top_headlines.layoutManager = LinearLayoutManager(activity)
         articleViewModel = ViewModelProvider(this).get(NewsArticleViewModel::class.java)
         adapter = activity?.let { HeadlinesAdapter(articleViewModel) }!!
         if(!isAdded)
             return
 
-
         articleViewModel.networkStateIndicator.observe(viewLifecycleOwner, Observer {networkState->
              when(networkState){
                  is NetworkStateResource.Error ->{
                      showErrorLayout()
+                     swipe_refresh_top_headlines.isRefreshing = false
                      Log.e(TAG, "ERROR: ${networkState.message}")
                  }
                  is NetworkStateResource.Success ->{
+                     swipe_refresh_top_headlines.isRefreshing = false
                      showNewsItems()
                      d(TAG, "SUCCESS ")
                  }
@@ -62,6 +65,7 @@ class FirstFragment : Fragment() {
         })
         articleViewModel.searchQueryLiveData.value = ""
         articleViewModel.headlinesPagedList.observe(viewLifecycleOwner, Observer {
+            d(TAG,"HeadlinesPagedList changes observed with size : "+ it.size)
             adapter.submitList(it)
         })
         recycler_top_headlines.adapter = adapter
@@ -151,5 +155,8 @@ class FirstFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-
+    override fun onRefresh() {
+        d(TAG, "Swipe TO Refresh onRefresh")
+        articleViewModel.headlinesPagedList.value?.dataSource?.invalidate()
+    }
 }

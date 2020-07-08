@@ -57,29 +57,4 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        super.onCreateOptionsMenu(menu)
-//        menu?.clear()
-//        menuInflater.inflate(R.menu.main_menu,menu)
-//        val menuItem : MenuItem = menu!!.findItem(R.id.action_search)
-//        val searchView : androidx.appcompat.widget.SearchView = menuItem.actionView as androidx.appcompat.widget.SearchView
-//
-//        searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener{
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                Log.d("Search", " : $query")
-//                if(query!=null && query!="")
-//                articleViewModel.getAllHeadlines(searchQuery = query)
-//                return false
-//            }
-//
-//            override fun onQueryTextChange(newText: String?): Boolean {
-////                if(newText!=null && newText!="")
-////                articleViewModel.getAllHeadlines(searchQuery = newText)
-//                return false
-//            }
-//
-//        })
-//
-//        return true
-//    }
 }
