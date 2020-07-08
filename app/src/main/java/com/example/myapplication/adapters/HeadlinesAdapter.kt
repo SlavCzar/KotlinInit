@@ -18,7 +18,6 @@ import com.example.myapplication.activities.NewsWebActivity
 import com.example.myapplication.databinding.ItemRecyclerEverythingBinding
 import com.example.myapplication.models.News
 import com.example.myapplication.viewmodels.NewsArticleViewModel
-import com.squareup.picasso.Picasso
 
 
 class HeadlinesAdapter(private val viewModel: NewsArticleViewModel): PagedListAdapter<News, HeadlinesAdapter.HeadlineViewHolder>(DiffUtilCallback()) {

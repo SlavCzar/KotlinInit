@@ -4,9 +4,10 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.myapplication.network.ApiService
-import com.example.myapplication.network.BASE_URL
 import com.example.myapplication.models.SourceX
 import com.example.myapplication.models.SourcesResponse
+import com.example.myapplication.utils.Constants.Companion.API_KEY
+import com.example.myapplication.utils.Constants.Companion.BASE_URL
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -29,7 +30,7 @@ class NewsSourceRepository(val application: Application) {
     val apiService = retrofit.create(ApiService::class.java)
 
     fun getAllSourcesFromApi(){
-            apiService.getAllSourcesFromAPI(apiKey = "8a842c0abbae4a2caae55feb66c9dd77")
+            apiService.getAllSourcesFromAPI(apiKey = API_KEY)
             .enqueue(object : Callback<SourcesResponse>{
             override fun onResponse(call: Call<SourcesResponse>,response: Response<SourcesResponse>) {
 

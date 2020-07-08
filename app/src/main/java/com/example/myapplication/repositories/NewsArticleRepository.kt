@@ -7,11 +7,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import com.example.myapplication.network.ApiService
-import com.example.myapplication.network.BASE_URL
 import com.example.myapplication.db.NewsDatabase
 import com.example.myapplication.models.News
 import com.example.myapplication.models.TopHeadlines
 import com.example.myapplication.network.toSimpleCall
+import com.example.myapplication.utils.Constants.Companion.API_KEY
+import com.example.myapplication.utils.Constants.Companion.BASE_URL
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,27 +34,27 @@ class NewsArticleRepository(val application: Application) {
     val database = NewsDatabase.getInstance(application)
 
 
-    fun getAllNews(searchQuery: String? = null,country: String? = null,
-        sortBy: String? = null,source: String? = null,category: String?=null)
-    {
-        apiService.getTopHeadlines(apiKey = "8a842c0abbae4a2caae55feb66c9dd77",searchQuery = searchQuery
-        ,country = country,source = source,category = category).enqueue(object : Callback<TopHeadlines>{
-
-            override fun onResponse(call: Call<TopHeadlines>, response: Response<TopHeadlines>) {
-                Log.d("Repository","getting top headlines")
-                Log.d(TAG, "onResponse: "+ response.body().toString())
-                newsList.value = response.body()?.articles
-//                newsList.value?.let { insertNews(it) }
-
-            }
-
-            override fun onFailure(call: Call<TopHeadlines>, t: Throwable) {
-                Log.e("Repository","ERROR getting top headlines")
-                Toast.makeText(application,t.toString(),Toast.LENGTH_LONG).show();
-                Log.e("ApiCallError",t.toString())
-            }
-        })
-    }
+//    fun getAllNews(searchQuery: String? = null,country: String? = null,
+//        sortBy: String? = null,source: String? = null,category: String?=null)
+//    {
+//        apiService.getTopHeadlines(apiKey = API_KEY,searchQuery = searchQuery
+//        ,country = country,source = source,category = category).enqueue(object : Callback<TopHeadlines>{
+//
+//            override fun onResponse(call: Call<TopHeadlines>, response: Response<TopHeadlines>) {
+//                Log.d("Repository","getting top headlines")
+//                Log.d(TAG, "onResponse: "+ response.body().toString())
+//                newsList.value = response.body()?.articles
+////                newsList.value?.let { insertNews(it) }
+//
+//            }
+//
+//            override fun onFailure(call: Call<TopHeadlines>, t: Throwable) {
+//                Log.e("Repository","ERROR getting top headlines")
+//                Toast.makeText(application,t.toString(),Toast.LENGTH_LONG).show();
+//                Log.e("ApiCallError",t.toString())
+//            }
+//        })
+//    }
 
     fun getSavedNews(): DataSource.Factory<Int, News>?
     {

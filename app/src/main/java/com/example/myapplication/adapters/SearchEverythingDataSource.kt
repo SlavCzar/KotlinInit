@@ -6,8 +6,10 @@ import androidx.paging.PageKeyedDataSource
 import com.example.myapplication.models.News
 import com.example.myapplication.models.TopHeadlines
 import com.example.myapplication.network.ApiService
-import com.example.myapplication.network.BASE_URL
 import com.example.myapplication.network.NetworkStateResource
+import com.example.myapplication.network.RetrofitInstance
+import com.example.myapplication.utils.Constants.Companion.API_KEY
+import com.example.myapplication.utils.Constants.Companion.BASE_URL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -25,17 +27,12 @@ public class SearchEverythingDataSource(private val searchQuery: String?, privat
 ) : PageKeyedDataSource<Int, News>()
 {
     private val TAG = "NewsDataSource"
-    val retrofit = Retrofit.Builder().baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-    val apiService = retrofit.create(ApiService::class.java)
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, News>)
     {
         scope.launch {
-
             networkStateIndicator.postValue(NetworkStateResource.Loading())
-            apiService.getEverything(apiKey = "8a842c0abbae4a2caae55feb66c9dd77",page = FIRST_PAGE,
+            RetrofitInstance.api.getEverything(apiKey = API_KEY,page = FIRST_PAGE,
                 searchQuery = searchQuery,
                 pageSize = PAGE_SIZE
             ).enqueue(object :
@@ -63,7 +60,7 @@ public class SearchEverythingDataSource(private val searchQuery: String?, privat
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, News>)
     {
         scope.launch {
-            apiService.getEverything(apiKey = "8a842c0abbae4a2caae55feb66c9dd77",page = params.key,
+            RetrofitInstance.api.getEverything(apiKey = API_KEY,page = params.key,
                 searchQuery = searchQuery,
                 pageSize = PAGE_SIZE
             ).enqueue(object : Callback<TopHeadlines> {
@@ -99,7 +96,7 @@ public class SearchEverythingDataSource(private val searchQuery: String?, privat
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, News>)
     {
         scope.launch {
-            apiService.getEverything(apiKey = "8a842c0abbae4a2caae55feb66c9dd77",page = params.key,
+            RetrofitInstance.api.getEverything(apiKey = API_KEY,page = params.key,
                 searchQuery = searchQuery,
                 pageSize = PAGE_SIZE
             ).enqueue(object :

@@ -5,10 +5,12 @@ import android.util.Log.d
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.example.myapplication.network.ApiService
-import com.example.myapplication.network.BASE_URL
 import com.example.myapplication.models.News
 import com.example.myapplication.models.TopHeadlines
 import com.example.myapplication.network.NetworkStateResource
+import com.example.myapplication.network.RetrofitInstance
+import com.example.myapplication.utils.Constants.Companion.API_KEY
+import com.example.myapplication.utils.Constants.Companion.BASE_URL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -25,18 +27,12 @@ public class TopHeadlinesDataSource(private val searchQuery: String?=null, val c
                                     private val networkStateIndicator: MutableLiveData<NetworkStateResource<Response<TopHeadlines>>>) : PageKeyedDataSource<Int, News>()
 {
 
-    val retrofit = Retrofit.Builder().baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-    val apiService = retrofit.create(ApiService::class.java)
-
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, News>)
     {
         d(TAG,"Loadinintial called for category : $category")
         scope.launch {
-
             networkStateIndicator.postValue(NetworkStateResource.Loading())
-            apiService.getTopHeadlines(country = "in",apiKey = "8a842c0abbae4a2caae55feb66c9dd77",page = FIRST_PAGE,
+            RetrofitInstance.api.getTopHeadlines(country = "in",apiKey = API_KEY,page = FIRST_PAGE,
                 searchQuery = searchQuery,category = category,
                 pageSize = PAGE_SIZE).enqueue(object :
                 Callback<TopHeadlines>{
@@ -60,7 +56,7 @@ public class TopHeadlinesDataSource(private val searchQuery: String?=null, val c
     {
         d(TAG,"Loadafter called for category : $category")
         scope.launch {
-            apiService.getTopHeadlines(country = "in",apiKey = "8a842c0abbae4a2caae55feb66c9dd77",page = params.key,
+            RetrofitInstance.api.getTopHeadlines(country = "in",apiKey = API_KEY,page = params.key,
                 searchQuery = searchQuery,category = category,
                 pageSize = PAGE_SIZE).enqueue(object : Callback<TopHeadlines>{
                 override fun onResponse(call: Call<TopHeadlines>, response: Response<TopHeadlines>) {
@@ -88,7 +84,7 @@ public class TopHeadlinesDataSource(private val searchQuery: String?=null, val c
     {
         d(TAG,"Loadbefore called for category : $category")
         scope.launch {
-            apiService.getTopHeadlines(country = "in",apiKey = "8a842c0abbae4a2caae55feb66c9dd77",page = params.key,
+            RetrofitInstance.api.getTopHeadlines(country = "in",apiKey = API_KEY,page = params.key,
                 searchQuery = searchQuery,category = category,
                 pageSize = PAGE_SIZE).enqueue(object :
                 Callback<TopHeadlines>{

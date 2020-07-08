@@ -5,8 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.example.myapplication.R
-import com.squareup.picasso.Picasso
+
 
 
 class NewsDetailActivity : AppCompatActivity() {
@@ -23,7 +24,7 @@ class NewsDetailActivity : AppCompatActivity() {
         val headlineTxt = findViewById<TextView>(R.id.detail_headline)
         val contentTxt = findViewById<TextView>(R.id.detail_content)
 
-        Picasso.with(applicationContext).load(imageUrl)
+        Glide.with(applicationContext).load(imageUrl)
             .placeholder(R.drawable.ic_launcher_background)
             .error(R.drawable.ic_launcher_foreground)
             .into(imageView)
