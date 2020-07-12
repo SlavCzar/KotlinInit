@@ -1,4 +1,4 @@
-package com.example.myapplication.adapters
+package com.example.myapplication.paging
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -9,20 +9,25 @@ import com.example.myapplication.network.NetworkStateResource
 import kotlinx.coroutines.CoroutineScope
 import retrofit2.Response
 
-class SearchEverythingFactory( private val searchQuery:String?= null,
+class TopHeadlinesFactory( private val searchQuery:String?= null,
+                           val category: String? = null,
                            val scope: CoroutineScope? = null,
                            var networkStateIndicator : MutableLiveData<NetworkStateResource<Response<TopHeadlines>>> = MutableLiveData()
 ) : DataSource.Factory<Int,News>(){
-    private lateinit var dataSource: SearchEverythingDataSource
+    private lateinit var dataSource: TopHeadlinesDataSource
+
+
+//    var dataSourceLiveData: MutableLiveData<TopHeadlinesDataSource> = MutableLiveData<TopHeadlinesDataSource>()
     override fun create(): DataSource<Int, News> {
-        Log.d("DataSourceFactory","Fetching Data from datasource")
+        Log.d("DataSourceFactory","Fetching Data from datasource for category : $category")
         dataSource =
             scope?.let {
-                SearchEverythingDataSource(
-                    searchQuery = searchQuery, scope = it,
+                TopHeadlinesDataSource(
+                    searchQuery = searchQuery, category = category, scope = it,
                     networkStateIndicator = networkStateIndicator
                 )
             }!!
+//        dataSourceLiveData.postValue(dataSource)
         return dataSource
     }
 }

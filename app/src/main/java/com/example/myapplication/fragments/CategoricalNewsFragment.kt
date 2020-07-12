@@ -83,8 +83,8 @@ class SecondFragment : Fragment(),SwipeRefreshLayout.OnRefreshListener {
                     R.id.chip_entertainment -> articleViewModel.categoryLiveData.postValue( "entertainment")
                     R.id.chip_science -> articleViewModel.categoryLiveData.postValue( "science")
                     else -> {
-                        chip_all.isChecked = true
-                        articleViewModel.categoryLiveData.postValue( "general")
+                        chip_sports.isChecked = true
+                        articleViewModel.categoryLiveData.postValue( "sport")
                     }
                 }
             }

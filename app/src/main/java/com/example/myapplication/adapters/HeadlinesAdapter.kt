@@ -1,6 +1,5 @@
 package com.example.myapplication.adapters
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
@@ -9,18 +8,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.AsyncListDiffer
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.activities.NewsWebActivity
 import com.example.myapplication.databinding.ItemRecyclerEverythingBinding
 import com.example.myapplication.models.News
+import com.example.myapplication.paging.DiffUtilCallback
 import com.example.myapplication.viewmodels.NewsArticleViewModel
 
 
-class HeadlinesAdapter(private val viewModel: NewsArticleViewModel): PagedListAdapter<News, HeadlinesAdapter.HeadlineViewHolder>(DiffUtilCallback()) {
+class HeadlinesAdapter(private val viewModel: NewsArticleViewModel): PagedListAdapter<News, HeadlinesAdapter.HeadlineViewHolder>(
+    DiffUtilCallback()
+) {
 
     private var newsList: List<News> = ArrayList()
     val drawableUnsaved: Int = R.drawable.ic_save_unmarked_foreground

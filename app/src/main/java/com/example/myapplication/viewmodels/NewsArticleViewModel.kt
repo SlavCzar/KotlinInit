@@ -8,9 +8,9 @@ import androidx.lifecycle.*
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.example.myapplication.adapters.SearchEverythingFactory
-import com.example.myapplication.adapters.TopHeadlinesDataSource
-import com.example.myapplication.adapters.TopHeadlinesFactory
+import com.example.myapplication.paging.SearchEverythingFactory
+import com.example.myapplication.paging.TopHeadlinesDataSource
+import com.example.myapplication.paging.TopHeadlinesFactory
 import com.example.myapplication.models.News
 import com.example.myapplication.models.TopHeadlines
 import com.example.myapplication.network.NetworkStateResource
@@ -52,7 +52,7 @@ public class NewsArticleViewModel(application : Application) : AndroidViewModel(
                     ).build()
             }
         })
-        categoryLiveData.postValue("general")
+        categoryLiveData.postValue("sports")
 
         categoricalHeadlinesList = Transformations.switchMap(categoryLiveData,object :Function<String,LiveData<PagedList<News>>>{
             override fun apply(input: String?): LiveData<PagedList<News>> {
@@ -74,8 +74,10 @@ public class NewsArticleViewModel(application : Application) : AndroidViewModel(
     private fun topHeadlinesPagedListBuilder(searchQuery: String? = null, category: String? = null,
         config: PagedList.Config?,networkStateIndicator: MutableLiveData<NetworkStateResource<Response<TopHeadlines>>>
     ): LivePagedListBuilder<Int,News> {
-        val factory = TopHeadlinesFactory(searchQuery = searchQuery,scope = viewModelScope,category = category,
-            networkStateIndicator = networkStateIndicator)
+        val factory = TopHeadlinesFactory(
+            searchQuery = searchQuery, scope = viewModelScope, category = category,
+            networkStateIndicator = networkStateIndicator
+        )
         return LivePagedListBuilder<Int,News>(factory,config!!)
     }
     private fun searchEverythingPagedListBuilder(
@@ -84,8 +86,11 @@ public class NewsArticleViewModel(application : Application) : AndroidViewModel(
         config: PagedList.Config?,
         networkStateIndicator: MutableLiveData<NetworkStateResource<Response<TopHeadlines>>>
     ): LivePagedListBuilder<Int,News> {
-        val dataSourceFactory = SearchEverythingFactory(searchQuery = searchQuery,scope = viewModelScope,
-        networkStateIndicator = networkStateIndicator)
+        val dataSourceFactory =
+            SearchEverythingFactory(
+                searchQuery = searchQuery, scope = viewModelScope,
+                networkStateIndicator = networkStateIndicator
+            )
         return LivePagedListBuilder<Int,News>(dataSourceFactory, config!!)
     }
     fun refreshData()

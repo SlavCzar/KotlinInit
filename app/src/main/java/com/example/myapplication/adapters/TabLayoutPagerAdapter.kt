@@ -24,7 +24,7 @@ class TabLayoutPagerAdapter(fm : FragmentManager) : FragmentPagerAdapter(fm) {
         return when(position){
             0 -> "Top Headlines"
             1->"Categorical"
-            else->"Coming Soon"
+            else->"Saved News"
         }
 
     }

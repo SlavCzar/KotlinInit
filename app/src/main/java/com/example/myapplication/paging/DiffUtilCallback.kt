@@ -1,4 +1,4 @@
-package com.example.myapplication.adapters
+package com.example.myapplication.paging
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.myapplication.models.News
