@@ -117,13 +117,11 @@ class FirstFragment : Fragment(),SwipeRefreshLayout.OnRefreshListener {
                 Log.d("Search", " : $query")
                 if(query!=null && query!="")
                 {
-//                    articleViewModel.getAllHeadlines(searchQuery = query, category = null)
                     articleViewModel.searchQueryLiveData.value = query
                     articleViewModel.searchQueryLiveData.postValue(query)
                 }
                 else
                 {
-//                    articleViewModel.getAllHeadlines(category = null)
                     articleViewModel.searchQueryLiveData.value = ""
                     articleViewModel.searchQueryLiveData.postValue("")
                 }
@@ -134,7 +132,6 @@ class FirstFragment : Fragment(),SwipeRefreshLayout.OnRefreshListener {
             override fun onQueryTextChange(newText: String?): Boolean {
                 if(newText==null || newText=="")
                 {
-//                    articleViewModel.getAllHeadlines(category = null)
                     articleViewModel.searchQueryLiveData.value = ""
                 }
 
@@ -143,10 +140,6 @@ class FirstFragment : Fragment(),SwipeRefreshLayout.OnRefreshListener {
         })
         searchView.setOnCloseListener (object : androidx.appcompat.widget.SearchView.OnCloseListener{
             override fun onClose(): Boolean {
-//                articleViewModel.getAllHeadlines(
-//                    source = "the-times-of-india,bbc-news,the-hindu,the-telegraph",
-//                    category = null
-//                )
                 articleViewModel.searchQueryLiveData.value = ""
                 return true
             }

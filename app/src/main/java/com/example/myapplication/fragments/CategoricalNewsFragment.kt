@@ -108,8 +108,8 @@ class SecondFragment : Fragment(),SwipeRefreshLayout.OnRefreshListener {
 
         shimmer_frame_layout_categorical.startShimmer()
         recycler_categorical.visibility = View.INVISIBLE
-        errorImageCategorical.visibility = View.INVISIBLE
-        errorTextCategorical.visibility = View.INVISIBLE
+        error_image_categorical.visibility = View.INVISIBLE
+        error_text_categorical.visibility = View.INVISIBLE
 
 
     }
@@ -119,17 +119,18 @@ class SecondFragment : Fragment(),SwipeRefreshLayout.OnRefreshListener {
         shimmer_frame_layout_categorical.visibility =View.INVISIBLE
         chipGroup.visibility = View.VISIBLE
         recycler_categorical.visibility = View.VISIBLE
-        errorImageCategorical.visibility = View.INVISIBLE
-        errorTextCategorical.visibility = View.INVISIBLE
+        error_image_categorical.visibility = View.INVISIBLE
+        error_text_categorical.visibility = View.INVISIBLE
     }
 
     private fun showErrorLayout() {
+
         shimmer_frame_layout_categorical.stopShimmer()
         shimmer_frame_layout_categorical.visibility =View.INVISIBLE
         chipGroup.visibility = View.INVISIBLE
         recycler_categorical.visibility = View.INVISIBLE
-        errorImageCategorical.visibility = View.VISIBLE
-        errorTextCategorical.visibility = View.VISIBLE
+        error_image_categorical.visibility = View.VISIBLE
+        error_text_categorical.visibility = View.VISIBLE
     }
 
     override fun onRefresh() {

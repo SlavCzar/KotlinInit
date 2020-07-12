@@ -98,14 +98,6 @@ public class NewsArticleViewModel(application : Application) : AndroidViewModel(
         dataSourceLiveData.value?.invalidate()
     }
 
-//    public fun getAllHeadlines(
-//        searchQuery: String? = null, country: String? = null,
-//        source: String? = null,
-//        category: String?=null)
-//    {
-//        return newsRepository.getAllNews(searchQuery = searchQuery,country = country,source = source,category = category);
-//    }
-
     public fun insertNewsInDb(news: News)
     {
         d("viewmodel", "insertNewsInDb: ")

@@ -17,6 +17,14 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * This data source is used to actually make network requests to the /everything endpoint
+ * and get paged results from the news API
+ * @param searchQuery : Query for which articles are to be searched
+ * @param scope : CoroutineScope for the calls to run on a background thread
+ * @param networkStateIndicator : An object that will notify observers regarding the
+ * network call status(Loading, Error or Success)
+ */
 public class SearchEverythingDataSource(private val searchQuery: String?, private val scope: CoroutineScope,
                                     private val networkStateIndicator: MutableLiveData<NetworkStateResource<Response<TopHeadlines>>>
 ) : PageKeyedDataSource<Int, News>()

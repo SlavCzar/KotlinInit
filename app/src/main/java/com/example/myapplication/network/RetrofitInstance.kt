@@ -8,6 +8,14 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+/**
+ * This class is used to instantiate a retrofit object and connect it with the ApiService Interface
+ *
+ * We use a companion object to use the class members without explicitly instantiating objects.
+ *
+ * The lazy initialisation is used to ensure that the actual api object is created only once and
+ * is then reused everywhere it is called.
+ */
 class RetrofitInstance {
 
     companion object {

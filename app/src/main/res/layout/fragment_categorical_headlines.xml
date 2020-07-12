@@ -110,7 +110,7 @@
         </com.google.android.material.chip.ChipGroup>
     </HorizontalScrollView>
     <ImageView
-        android:id="@+id/errorImageCategorical"
+        android:id="@+id/error_image_categorical"
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:foregroundGravity="center_horizontal"
@@ -123,7 +123,7 @@
         app:layout_constraintVertical_bias="0.3" />
 
     <TextView
-        android:id="@+id/errorTextCategorical"
+        android:id="@+id/error_text_categorical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="invisible"
@@ -131,9 +131,9 @@
         android:layout_margin="20dp"
         android:textStyle="italic"
         android:text="@string/string_network_error_msg"
-        app:layout_constraintEnd_toEndOf="@+id/errorImageCategorical"
-        app:layout_constraintStart_toStartOf="@+id/errorImageCategorical"
-        app:layout_constraintTop_toBottomOf="@+id/errorImageCategorical" />
+        app:layout_constraintEnd_toEndOf="@+id/error_image_categorical"
+        app:layout_constraintStart_toStartOf="@+id/error_image_categorical"
+        app:layout_constraintTop_toBottomOf="@+id/error_image_categorical" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

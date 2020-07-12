@@ -17,7 +17,6 @@ class TopHeadlinesFactory( private val searchQuery:String?= null,
     private lateinit var dataSource: TopHeadlinesDataSource
 
 
-//    var dataSourceLiveData: MutableLiveData<TopHeadlinesDataSource> = MutableLiveData<TopHeadlinesDataSource>()
     override fun create(): DataSource<Int, News> {
         Log.d("DataSourceFactory","Fetching Data from datasource for category : $category")
         dataSource =
@@ -27,7 +26,6 @@ class TopHeadlinesFactory( private val searchQuery:String?= null,
                     networkStateIndicator = networkStateIndicator
                 )
             }!!
-//        dataSourceLiveData.postValue(dataSource)
         return dataSource
     }
 }
